@@ -39,10 +39,6 @@ library(grid)
 raw_dir <- "data/raw/E-MTAB-5868"
 targets_file <- "data/metadata/Paterson_lab_pigv_infection_timeseries_diet_microarray_slides.txt"
 
-raw_dir <- "~/Library/Mobile Documents/com~apple~CloudDocs/Desktop/UC Berkeley/My Data/Microarray/E-MTAB-5868"
-targets_file <- "~/Library/Mobile Documents/com~apple~CloudDocs/Desktop/UC Berkeley/My Data/Microarray/Paterson_lab_pigv_infection_timeseries_diet_microarray_slides.txt"
-
-
 # Output directories
 dir.create("results", showWarnings = FALSE, recursive = TRUE)
 dir.create("results/rds", showWarnings = FALSE, recursive = TRUE)
