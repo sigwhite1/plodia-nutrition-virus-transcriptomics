@@ -125,10 +125,17 @@ clustering <- list(
 # 4) Minimal plotting defaults
 # -----------------------------
 plot_cfg <- list(
-  base_size      = 30,
-  deg_label_size = 8
+  base_size        = 12,
+  base_family      = "sans",
+  title_size       = 16,
+  subtitle_size    = 12,
+  axis_title_size  = 13,
+  axis_text_size   = 11,
+  legend_title_size= 12,
+  legend_text_size = 11,
+  strip_text_size  = 12,
+  deg_label_size   = 3.8
 )
-
 # -----------------------------
 # 5) Save exactly what the next block needs
 # -----------------------------
