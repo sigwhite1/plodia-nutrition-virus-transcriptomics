@@ -39,6 +39,10 @@ library(grid)
 raw_dir <- "data/raw/E-MTAB-5868"
 targets_file <- "data/metadata/Paterson_lab_pigv_infection_timeseries_diet_microarray_slides.txt"
 
+raw_dir <- "~/Library/Mobile Documents/com~apple~CloudDocs/Desktop/UC Berkeley/My Data/Microarray/E-MTAB-5868"
+targets_file <- "~/Library/Mobile Documents/com~apple~CloudDocs/Desktop/UC Berkeley/My Data/Microarray/Paterson_lab_pigv_infection_timeseries_diet_microarray_slides.txt"
+
+
 # Output directories
 dir.create("results", showWarnings = FALSE, recursive = TRUE)
 dir.create("results/rds", showWarnings = FALSE, recursive = TRUE)
@@ -90,6 +94,13 @@ MA <- normalizeBetweenArrays(MA, method = "Aquantile")
 
 # Store targets explicitly in MA object for clarity
 MA$targets <- targets
+
+# Store probe identifiers as row names for downstream limma + annotation mapping
+if (!is.null(MA$genes) && "ProbeName" %in% colnames(MA$genes)) {
+  rownames(MA$M) <- MA$genes$ProbeName
+  rownames(MA$A) <- MA$genes$ProbeName
+}
+
 
 # ----------------------------
 # 5. Quick QC summaries
@@ -152,6 +163,12 @@ MA_filtered$A <- MA$A[, keep, drop = FALSE]
 MA_filtered$targets <- targets[keep, , drop = FALSE]
 
 targets_filtered <- targets[keep, , drop = FALSE]
+
+# Preserve probe identifiers after filtering
+if (!is.null(MA_filtered$genes) && "ProbeName" %in% colnames(MA_filtered$genes)) {
+  rownames(MA_filtered$M) <- MA_filtered$genes$ProbeName
+  rownames(MA_filtered$A) <- MA_filtered$genes$ProbeName
+}
 
 # ----------------------------
 # 7. Recompute correlation matrices after filtering
