@@ -8,7 +8,7 @@
 #
 # Inputs:
 # - data/raw/E-MTAB-5868/
-# - data/metadata/Paterson_lab_pigv_infection_timeseries_diet_microarray_slides.txt
+# - data/metadata/pigv_infection_timeseries_diet_microarray_slides.txt
 #
 # Outputs:
 # - results/rds/MA_filtered.rds
@@ -37,7 +37,7 @@ library(grid)
 # =========================================================
 
 raw_dir <- "data/raw/E-MTAB-5868"
-targets_file <- "data/metadata/Paterson_lab_pigv_infection_timeseries_diet_microarray_slides.txt"
+targets_file <- "data/metadata/pigv_infection_timeseries_diet_microarray_slides.txt"
 
 # Output directories
 dir.create("results", showWarnings = FALSE, recursive = TRUE)
