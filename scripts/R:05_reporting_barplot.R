@@ -394,3 +394,85 @@ if (requireNamespace("ragg", quietly = TRUE)) {
 }
 message("Saved Jaccard plot to: ", out_jaccard_png)
 
+# ----------------------------- 
+# 9) Spearman logFC correlation between diets across all probes
+# ----------------------------- 
+# Compute Spearman correlation between high and low diet logFC vectors
+# at each timepoint, across ALL probes with non-missing values in both diets.
+# This complements the Jaccard analysis by asking whether fold-change
+# magnitudes and directions are concordant between diets even among
+# non-significant genes, providing a direct assessment of whether
+# near-zero DEG overlap reflects power differences or genuine divergence.
+
+spearman_cor_by_time <- results_all %>%
+  dplyr::filter(!is.na(diet), !is.na(time_h), !is.na(logFC)) %>%
+  dplyr::group_by(time_h, ProbeName, diet) %>%
+  dplyr::summarise(logFC = median(logFC, na.rm = TRUE), .groups = "drop") %>%
+  tidyr::pivot_wider(names_from = diet, values_from = logFC) %>%
+  dplyr::filter(!is.na(high), !is.na(low)) %>%
+  dplyr::group_by(time_h) %>%
+  dplyr::summarise(
+    n_probes      = dplyr::n(),
+    spearman_r    = suppressWarnings(
+      stats::cor(high, low, method = "spearman", use = "pairwise.complete.obs")
+    ),
+    pearson_r     = suppressWarnings(
+      stats::cor(high, low, method = "pearson",  use = "pairwise.complete.obs")
+    ),
+    .groups = "drop"
+  ) %>%
+  dplyr::mutate(
+    time_h = factor(time_h, levels = time_levels_hours, ordered = TRUE)
+  )
+
+message("Spearman logFC correlation between diets by timepoint:")
+print(spearman_cor_by_time)
+
+saveRDS(
+  spearman_cor_by_time,
+  file = file.path(paths$intermediate_dir, "spearman_cor_by_time.rds")
+)
+
+# Plot Spearman correlation across timepoints
+spearman_plot <- ggplot2::ggplot(
+  spearman_cor_by_time,
+  ggplot2::aes(x = time_h, y = spearman_r, group = 1)
+) +
+  ggplot2::geom_hline(
+    yintercept = 0, linewidth = 0.6, colour = "grey40", linetype = "dashed"
+  ) +
+  ggplot2::geom_line(linewidth = 1.1) +
+  ggplot2::geom_point(size = 2.5) +
+  ggplot2::geom_text(
+    ggplot2::aes(label = round(spearman_r, 2)),
+    vjust  = -0.8,
+    size   = 3.5,
+    color  = "#d6604d",
+    fontface = "bold" # blue, visible against black points and white background
+  ) +
+  ggplot2::scale_y_continuous(
+    limits = c(
+      min(spearman_cor_by_time$spearman_r, na.rm = TRUE) * 1.2,
+      max(spearman_cor_by_time$spearman_r, na.rm = TRUE) * 1.2
+    ),
+    expand = ggplot2::expansion(mult = c(0.05, 0.1))
+  ) +
+  ggplot2::theme_minimal(base_size = config$plot_cfg$base_size) +
+  ggplot2::labs(
+    title    = "Spearman Correlation of logFC Between Diets",
+    subtitle = "Computed across all probes with non-missing values in both diets",
+    x        = "Time after infection (hours)",
+    y        = "Spearman r (high vs low resource logFC)"
+  )
+
+print(spearman_plot)
+
+out_spearman_png <- file.path(paths$figures_dir, "logFC_spearman_cor_by_time.png")
+if (requireNamespace("ragg", quietly = TRUE)) {
+  ragg::agg_png(out_spearman_png, width = 3200, height = 1800, res = 300)
+  print(spearman_plot); grDevices::dev.off()
+} else {
+  grDevices::png(out_spearman_png, width = 3200, height = 1800, res = 300)
+  print(spearman_plot); grDevices::dev.off()
+}
+message("Saved Spearman correlation plot to: ", out_spearman_png)
