@@ -36,14 +36,21 @@ suppressPackageStartupMessages({
   library(circlize)
   library(grid)
 })
-
 # -----------------------------
-# 1) Paths — edit these once
+# 1) Paths — edit these to match your local directory structure
 # -----------------------------
-file_path    <- "~/Desktop/UC Berkeley/My Data/Microarray/E-MTAB-5868"   # directory of Agilent .txt files
-targets_path <- "~/Desktop/UC Berkeley/My Data/Microarray/Meaden and Roberts/Paterson_lab_pigv_infection_timeseries_diet_microarray_slides.txt"
-output_rdata <- "microarray_QC_clean.RData"
-sdrf_path    <- "~/Desktop/Microarray/E-MTAB-5868.sdrf.txt" # authoritative metadata from EBI
+# file_path:    path to the directory containing raw Agilent .txt files
+#               (downloaded from ArrayExpress accession E-MTAB-5868)
+# targets_path: path to the targets/metadata file
+#               (provided in the repository as data/targets.txt)
+# sdrf_path:    path to the SDRF metadata file from EBI
+#               (provided in the repository as data/E-MTAB-5868_sdrf.txt)
+# output_rdata: name of the output .RData file written to the working directory
+ 
+file_path    <- "path/to/E-MTAB-5868"          # directory of raw Agilent .txt files
+targets_path <- "data/targets.txt"             # targets/metadata file
+sdrf_path    <- "data/E-MTAB-5868_sdrf.txt"    # SDRF metadata from EBI
+output_rdata <- "microarray_QC_clean.RData"    # output file (written to working directory)
 
 # -----------------------------
 # 2) Load and clean targets metadata
