@@ -11,7 +11,7 @@ The analysis pipeline is organized into numbered scripts that should be run in t
 1. `R_QC_microarray.R`  
    Import raw Agilent two-color microarray data, perform quality control, background correction, and normalization. Excludes low-quality arrays based on A-value correlation.
 2. `R_00_config.R`  
-   Define shared configuration, file paths, analysis constants, and plotting defaults used by all downstream scripts.
+   Define shared configuration, file paths, analysis constants, and plotting defaults used by downstream scripts.
 3. `R_01_load_inputs.R`  
    Load and validate QC-normalized data and sample metadata.
 4. `R_02_design_matrix.R`  
@@ -59,6 +59,8 @@ Key packages include:
 ## Data availability
 The microarray dataset analyzed in this project is available through the
 European Bioinformatics Institute ArrayExpress/BioStudies repository.
+
+The dataset is currently under embargo pending publication. A reviewer access link is available in the manuscript document. Data will be made publicly available upon acceptance.
 
 Accession: E-MTAB-5868
 https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-5868
