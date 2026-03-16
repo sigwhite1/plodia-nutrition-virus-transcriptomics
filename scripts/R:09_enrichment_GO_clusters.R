@@ -299,7 +299,17 @@ if (is.null(cluster_go) || nrow(cluster_go) == 0) {
   # -----------------------------
   # 5) Plot: top terms per cluster
   # -----------------------------
+  # Layout: Cluster 1 top-left, [empty] top-right,
+  #          Cluster 3 bottom-left, Cluster 4 bottom-right.
+  # Achieved by inserting a dummy " " level between Cluster_1 and Cluster_3
+  # so facet_wrap(ncol=2) leaves the top-right panel empty.
   cluster_go_top <- cluster_go %>%
+    dplyr::filter(label %in% c("Cluster_1", "Cluster_3", "Cluster_4")) %>%
+    dplyr::mutate(
+      label = factor(label,
+                     levels = c("Cluster_1", " ",
+                                "Cluster_3", "Cluster_4"))
+    ) %>%
     dplyr::group_by(label) %>%
     dplyr::slice_max(neglog10_fdr, n = 8, with_ties = FALSE) %>%
     dplyr::ungroup() %>%
@@ -317,7 +327,8 @@ if (is.null(cluster_go) || nrow(cluster_go) == 0) {
                  colour = source)
   ) +
     ggplot2::geom_point(alpha = 0.85) +
-    ggplot2::facet_wrap(~ label, ncol = 2, scales = "free_y") +
+    ggplot2::facet_wrap(~ label, ncol = 2, scales = "free_y",
+                        drop = FALSE) +
     ggplot2::labs(
       title  = "GO enrichment across expression clusters",
       x      = expression(-log[10]("FDR (BH)")),
