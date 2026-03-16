@@ -8,8 +8,8 @@ The analysis identifies coordinated transcriptional modules and evaluates how re
 
 ## Analysis workflow
 The analysis pipeline is organized into numbered scripts that should be run in the following order:
-1. `01_import_qc.R`  
-   Import raw microarray data and perform initial quality control.
+1. `R_QC_microarray.R`  
+   Import raw Agilent two-color microarray data, perform quality control, background correction, and normalization. Excludes low-quality arrays based on A-value correlation.
 2. `02_normalization_limma.R`  
    Normalize expression data and fit differential expression models using limma.
 3. `03_define_deg_sets.R`  
