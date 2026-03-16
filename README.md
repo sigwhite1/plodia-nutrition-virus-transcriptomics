@@ -30,19 +30,19 @@ The analysis pipeline is organized into numbered scripts that should be run in t
     Assign DEGs to four expression clusters using hierarchical clustering with stabilized cluster labels anchored to a biological reference contrast.
 11. `R_08b_annotate_clusters.R`
     Map cluster assignments to Drosophila melanogaster orthologs via DIAMOND BLASTP results and build the master probe annotation table.
+
+→ Terminal: diamond_blastp.sh
+Build a DIAMOND database from the *D. melanogaster* UniProt reference proteome and run BLASTP to map *P. interpunctella* protein sequences to their best *Drosophila* ortholog. Produces plodia_to_dmel.tsv, required by the next step. See diamond_blastp.sh for full commands.
+    
 12. `R_09_enrichment_GO_clusters.R`
     Perform GO enrichment analysis for each expression cluster using g:Profiler against a custom microarray background.
 13. `R_10_cluster_summaries.R`
     Compute cluster-level trajectory summaries and generate mean ± 95% CI expression plots across diet × time.
 14. `R_11_immune_gene_evaluation.R`
     Identify immune-annotated probes using GO:BP immune categories and generate heatmaps of immune gene expression across diet × time contrasts.
-
-→ Terminal: diamond_blastp.sh
-Build a DIAMOND database from the *D. melanogaster* UniProt reference proteome and run BLASTP to map *P. interpunctella* protein sequences to their best *Drosophila* ortholog. Produces plodia_to_dmel.tsv, required by the next step. See diamond_blastp.sh for full commands.
-    
-16. `R_12_immune_pathway_dynamics.R`
+15. `R_12_immune_pathway_dynamics.R`
     Summarize immune gene dynamics using gene-blocked linear models and test for diet-dependent effects across GO immune categories.
-17. `R_13_deg_cluster_enrichment.R`
+16. `R_13_deg_cluster_enrichment.R`
     Test whether DEGs at each diet × time contrast are non-randomly distributed across expression clusters using Fisher's exact tests.
 
 ## Computational environment
