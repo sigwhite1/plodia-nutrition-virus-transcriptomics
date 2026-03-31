@@ -274,6 +274,14 @@ spearman_global <- results_all %>%
 # -----------------------------------------------------------------------
 # 4) Plot: cluster-stratified Spearman correlation faceted by cluster
 # -----------------------------------------------------------------------
+# Updated cluster labels with probe counts
+cluster_labels <- c(
+  "1" = "Cluster 1\n(Ribosomal / Translation; n = 2,254)",
+  "2" = "Cluster 2\n(No enrichment; n = 1,707)",
+  "3" = "Cluster 3\n(Cuticle / ECM; n = 1,416)",
+  "4" = "Cluster 4\n(Chromatin / Nucleosome; n = 1,218)"
+)
+
 # Add cluster label column for facet display
 spearman_plot_df <- spearman_by_cluster_time %>%
   dplyr::mutate(
@@ -303,15 +311,10 @@ cluster_spearman_plot <- ggplot2::ggplot(
   ) +
   ggplot2::geom_line(linewidth = 1.0, colour = "black") +
   ggplot2::geom_point(
-    ggplot2::aes(size = n_probes),
+    size   = 2.5,       # fixed size, no legend
     colour = "black"
   ) +
   ggplot2::facet_wrap(~ cluster_label, ncol = 2) +
-  ggplot2::scale_size_continuous(
-    name   = "N probes",
-    range  = c(1.5, 4),
-    breaks = c(100, 500, 1000, 2000)
-  ) +
   ggplot2::scale_y_continuous(
     limits = c(
       min(c(spearman_plot_df$spearman_r,
@@ -330,7 +333,6 @@ cluster_spearman_plot <- ggplot2::ggplot(
     x = "Time after infection (hours)",
     y = "Spearman r (high vs low resource logFC)"
   )
-
 out_cluster_spearman <- file.path(
   paths$figures_dir, "logFC_spearman_cor_by_cluster.png"
 )
