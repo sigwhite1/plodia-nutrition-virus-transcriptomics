@@ -368,10 +368,3 @@ spearman_summary <- spearman_by_cluster_time %>%
 
 message("\nMean Spearman r by cluster and infection phase:")
 print(spearman_summary, n = Inf)
-
-# The key prediction to check:
-# Cluster 3 (Cuticle/ECM - shared late program) should show higher
-# between-diet correlation than Clusters 1 and 4 (diet-specific early programs),
-# particularly at late timepoints. If this holds, it supports the argument
-# that near-zero Jaccard similarity reflects genuine biological divergence
-# in early programs rather than power differences alone.
